@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Панель роботодавця</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .btn { padding: 6px 12px; text-decoration: none; background: #28a745; color: white; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<div>
+    <strong>Режим: Роботодавець</strong> |
+    <a th:href="@{/vacancies}">← Повернутися до публічного сайту</a>
+</div>
+
+<h1>Управління вакансіями (Роботодавець)</h1>
+
+<div style="margin-bottom: 15px;">
+    <a th:href="@{/vacancies/employer/new}" class="btn">+ Додати нову вакансію</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Назва вакансії</th>
+        <th>Опис</th>
+        <th>Вимоги</th>
+        <th>Зарплата ($)</th>
+        <th>Управління (Роботодавець)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="v : ${vacancies}">
+        <td th:text="${v.id}">1</td>
+        <td th:text="${v.title}">Title</td>
+        <td th:text="${v.description}">Description</td>
+        <td th:text="${v.requirements}">Requirements</td>
+        <td th:text="${v.salary}">0.0</td>
+        <td>
+            <a th:href="@{/vacancies/employer/edit/{id}(id=${v.id})}">Редагувати</a> |
+            <a th:href="@{/vacancies/employer/delete/{id}(id=${v.id})}" style="color:red;" onclick="return confirm('Ви впевнені, що хочете видалити вакансію?');">Видалити</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

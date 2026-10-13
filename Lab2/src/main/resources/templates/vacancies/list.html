@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Пошук роботи — Вакансії</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .nav { margin-bottom: 20px; }
+        .vacancy-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        .salary { color: green; font-weight: bold; }
+        .btn { padding: 6px 12px; text-decoration: none; background: #007bff; color: white; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <strong>Режим: Користувач (Шукач роботи)</strong> |
+    <a th:href="@{/vacancies/employer}">Перейти в кабінет роботодавця →</a>
+</div>
+
+<h1>Пошук роботи</h1>
+
+<form th:action="@{/vacancies}" method="get" style="margin-bottom: 20px;">
+    <input type="text" name="keyword" th:value="${keyword}" placeholder="Пошук за ключовими словами (напр. Java, React)..." style="width: 300px; padding: 6px;">
+    <button type="submit">Шукати</button>
+    <a th:href="@{/vacancies}">Скинути</a>
+</form>
+
+<div th:if="${#lists.isEmpty(vacancies)}">
+    <p>Вакансій не знайдено.</p>
+</div>
+
+<div th:each="v : ${vacancies}" class="vacancy-card">
+    <h3 th:text="${v.title}">Назва вакансії</h3>
+    <p><strong>Опис:</strong> <span th:text="${v.description}">Опис</span></p>
+    <p><strong>Вимоги:</strong> <span th:text="${v.requirements}">Вимоги</span></p>
+    <p><strong>Зарплата:</strong> <span class="salary" th:text="${v.salary + ' $'}">0 $</span></p>
+    <a th:href="@{/vacancies/{id}(id=${v.id})}" class="btn">Детальніше</a>
+</div>
+</body>
+</html>

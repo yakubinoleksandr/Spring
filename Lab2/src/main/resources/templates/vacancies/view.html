@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${vacancy.title}">Деталі вакансії</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .box { border: 1px solid #ccc; padding: 20px; max-width: 600px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+<a th:href="@{/vacancies}">← Назад до списку</a>
+
+<div class="box" style="margin-top: 15px;">
+    <h2 th:text="${vacancy.title}">Назва</h2>
+    <p><strong>Зарплата:</strong> <span th:text="${vacancy.salary + ' $'}"></span></p>
+    <p><strong>Опис вакансії:</strong></p>
+    <p th:text="${vacancy.description}"></p>
+    <p><strong>Вимоги до кандидата:</strong></p>
+    <p th:text="${vacancy.requirements}"></p>
+</div>
+</body>
+</html>
