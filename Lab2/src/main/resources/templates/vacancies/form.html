@@ -7,11 +7,11 @@
         body { font-family: Arial, sans-serif; margin: 20px; }
         .form-group { margin-bottom: 12px; }
         label { display: block; font-weight: bold; }
-        input, textarea { width: 350px; padding: 6px; }
+        input, textarea, select { width: 350px; padding: 6px; }
     </style>
 </head>
 <body>
-<h2 th:text="${vacancy.id == null} ? 'Створення нові вакансії' : 'Редагування вакансії'">Форма</h2>
+<h2 th:text="${vacancy.id == null} ? 'Створення вакансії' : 'Редагування вакансії'">Форма</h2>
 
 <form th:action="@{/vacancies/employer/save}" th:object="${vacancy}" method="post">
     <input type="hidden" th:field="*{id}"/>
@@ -19,6 +19,15 @@
     <div class="form-group">
         <label>Назва вакансії:</label>
         <input type="text" th:field="*{title}" required/>
+    </div>
+
+    <div class="form-group">
+        <label>Тип зайнятості:</label>
+        <select th:field="*{employmentType}">
+            <option th:each="type : ${employmentTypes}"
+                    th:value="${type}"
+                    th:text="${type.title}">Тип</option>
+        </select>
     </div>
 
     <div class="form-group">
@@ -33,7 +42,7 @@
 
     <div class="form-group">
         <label>Зарплата ($):</label>
-        <input type="number" step="0.01" th:field="*{salary}"/>
+        <input type="number" step="0.01" th:field="*{salary}" placeholder="Залиште порожнім за домовленістю"/>
     </div>
 
     <button type="submit">Зберегти</button>

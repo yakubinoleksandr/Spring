@@ -1,5 +1,6 @@
 package com.example.lab2.repository;
 
+import com.example.lab2.model.EmploymentType;
 import com.example.lab2.model.Vacancy;
 import org.springframework.stereotype.Repository;
 
@@ -17,9 +18,10 @@ public class VacancyRepository {
     private final AtomicLong idGenerator = new AtomicLong(0);
 
     public VacancyRepository() {
-        save(new Vacancy(null, "Java Developer", "Розробка Spring Boot сервісів", "Java 17, Spring, PostgreSQL", 2500.0));
-        save(new Vacancy(null, "Frontend Engineer", "Створення UI на React", "React, TypeScript, CSS", 2200.0));
-        save(new Vacancy(null, "QA Automation", "Автоматизація тестування", "Java, Selenium, JUnit", 1800.0));
+        save(new Vacancy(null, "Java Senior Developer", "Розробка мікросервісів", "Java 17, Spring Boot, Docker", 3500.0, EmploymentType.FULL_TIME));
+        save(new Vacancy(null, "Frontend React Engineer", "Створення UI для платформи", "React, TypeScript, CSS", 2200.0, EmploymentType.REMOTE));
+        save(new Vacancy(null, "QA Automation", "Автоматизація тестування API", "Java, REST Assured, JUnit", null, EmploymentType.PART_TIME)); // Зарплата null для Elvis-оператора
+        save(new Vacancy(null, "DevOps Consultant", "Налаштування CI/CD пайплайнів", "Kubernetes, GitLab CI, Terraform", 1500.0, EmploymentType.PROJECT));
     }
 
     public List<Vacancy> findAll() {

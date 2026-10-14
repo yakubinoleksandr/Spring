@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <title>Пошук роботи — Вакансії</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .nav { margin-bottom: 20px; }
-        .vacancy-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
-        .salary { color: green; font-weight: bold; }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f9f9f9; }
+        .nav { margin-bottom: 20px; background: #fff; padding: 10px; border-radius: 5px; }
+        .vacancy-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
+        .salary { color: #27ae60; font-weight: bold; }
+        .badge { padding: 4px 8px; border-radius: 3px; color: white; font-size: 0.85em; font-weight: bold; }
+        .badge-full { background-color: #2980b9; }
+        .badge-part { background-color: #8e44ad; }
+        .badge-remote { background-color: #27ae60; }
+        .badge-project { background-color: #e67e22; }
         .btn { padding: 6px 12px; text-decoration: none; background: #007bff; color: white; border-radius: 4px; }
+        .no-results { color: #7f8c8d; font-style: italic; }
     </style>
 </head>
 <body>
@@ -17,24 +23,43 @@
     <a th:href="@{/vacancies/employer}">Перейти в кабінет роботодавця →</a>
 </div>
 
-<h1>Пошук роботи</h1>
+<h1>Список доступних вакансій</h1>
 
 <form th:action="@{/vacancies}" method="get" style="margin-bottom: 20px;">
-    <input type="text" name="keyword" th:value="${keyword}" placeholder="Пошук за ключовими словами (напр. Java, React)..." style="width: 300px; padding: 6px;">
+    <input type="text" name="keyword" th:value="${keyword}" placeholder="Введіть ключове слово..." style="width: 300px; padding: 6px;">
     <button type="submit">Шукати</button>
     <a th:href="@{/vacancies}">Скинути</a>
 </form>
 
-<div th:if="${#lists.isEmpty(vacancies)}">
-    <p>Вакансій не знайдено.</p>
+<div th:if="${#lists.isEmpty(vacancies)}" class="no-results">
+    <p>На жаль, за вашим запитом не знайдено жодної вакансії.</p>
 </div>
 
-<div th:each="v : ${vacancies}" class="vacancy-card">
-    <h3 th:text="${v.title}">Назва вакансії</h3>
-    <p><strong>Опис:</strong> <span th:text="${v.description}">Опис</span></p>
-    <p><strong>Вимоги:</strong> <span th:text="${v.requirements}">Вимоги</span></p>
-    <p><strong>Зарплата:</strong> <span class="salary" th:text="${v.salary + ' $'}">0 $</span></p>
-    <a th:href="@{/vacancies/{id}(id=${v.id})}" class="btn">Детальніше</a>
+<!-- [2.3] Цикл th:each -->
+<div th:unless="${#lists.isEmpty(vacancies)}">
+    <div th:each="v : ${vacancies}" class="vacancy-card">
+
+        <h3 th:text="${v.title}">Назва вакансії</h3>
+
+        <p><strong>Формат роботи:</strong>
+            <span th:switch="${v.employmentType?.name()}">
+                    <span th:case="'FULL_TIME'" class="badge badge-full" th:text="${v.employmentType.title}">Повна</span>
+                    <span th:case="'PART_TIME'" class="badge badge-part" th:text="${v.employmentType.title}">Часткова</span>
+                    <span th:case="'REMOTE'" class="badge badge-remote" th:text="${v.employmentType.title}">Віддалена</span>
+                    <span th:case="'PROJECT'" class="badge badge-project" th:text="${v.employmentType.title}">Проєкт</span>
+                    <span th:case="*" class="badge" style="background:#95a5a6;">Не вказано</span>
+                </span>
+        </p>
+
+        <p><strong>Опис:</strong> <span th:text="${v.description}">Опис</span></p>
+        <p><strong>Вимоги:</strong> <span th:text="${v.requirements}">Вимоги</span></p>
+
+        <p><strong>Заробітна плата:</strong>
+            <span class="salary" th:text="${v.salary != null ? v.salary + ' $' : 'За домовленістю'}">0 $</span>
+        </p>
+
+        <a th:href="@{/vacancies/{id}(id=${v.id})}" class="btn">Детальніше</a>
+    </div>
 </div>
 </body>
 </html>
