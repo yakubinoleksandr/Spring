@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/vacancies")
+@RequestMapping("/api/v1/lab4/vacancies")
 @Tag(
         name = "Vacancies",
         description = "REST API для керування вакансіями"
